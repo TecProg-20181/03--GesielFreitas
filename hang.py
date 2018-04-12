@@ -115,10 +115,10 @@ class Hangman:
         secretLetters = []
 
         for letter in secretWord:
-            if letter in lettersGuessed:
-                pass
-            else:
+            if letter not in lettersGuessed:
                 return False
+            else:
+                pass
 
         return True
 
