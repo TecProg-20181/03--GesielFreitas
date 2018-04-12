@@ -59,7 +59,7 @@ class Hangman:
     def _menuStart(self):
         
         print 'Welcome to the game, Hangam!'
-        print 'I am thinking of a word that is', len(self._secretWord), ' letters long.'
+        print 'I am thinking of a word that is', len(self._secretWord), ' letters long and', self._letterDiferrent(),' different letters'
         print '-------------'   
 
     def game(self):
@@ -67,7 +67,7 @@ class Hangman:
         self._menuStart()
 
         while  self._isWordGuessed(self._secretWord, self._lettersGuessed) == False and self._guesses >0:
-            print 'You have ', self._guesses, 'guesses left.'
+            print 'You have ', self._guesses, 'guesses left'
 
             available = self._getAvailableLetters()
 
@@ -109,6 +109,7 @@ class Hangman:
         wordlist = string.split(line)
         print "  ", len(wordlist), "words loaded."
         self._secretWord = random.choice(wordlist)
+        
 
 
     def _isWordGuessed(self, secretWord, lettersGuessed):
@@ -136,7 +137,14 @@ class Hangman:
 
         return available        
 
-
+    def _letterDiferrent(self):
+        letterDiferrent = self._secretWord
+        total = 0
+        for letter in letterDiferrent:
+            if letter in letterDiferrent:
+                letterDiferrent = letterDiferrent.replace(letter, '')    
+                total += 1
+        return total        
 
 hangman = Hangman()
 hangman.game()
