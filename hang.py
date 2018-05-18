@@ -113,10 +113,18 @@ class Hangman:
         take a while to finish.
         """
         print "Loading word list from file..."
-        # inFile: file
-        inFile = open(WORDLIST_FILENAME, 'r', 0)
+        
+        try:
+            # inFile: file
+            inFile = open(WORDLIST_FILENAME, 'r', 0)
+
+        except FileNotFoud:
+            print("This file", self.wordlist_filename, "not exist in currency directory!")
+            sys.exit(0)   
+        
         # line: string
         line = inFile.readline()
+        
         # wordlist: list of strings
         wordlist = string.split(line)
         print "  ", len(wordlist), "words loaded."
