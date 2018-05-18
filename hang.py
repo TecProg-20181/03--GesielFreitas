@@ -1,5 +1,8 @@
 import random
 import string
+import warnings
+
+warnings.simplefilter('error')
 
 WORDLIST_FILENAME = "palavras.txt"
 
@@ -15,14 +18,21 @@ class Hangman:
     def _getLetter(self):
         
         letter = raw_input('Please guess a letter: ')
-        return letter
+
+        # garanted only letter
+
+        while len(letter) > 1 or letter.isdigit() == True:
+            letter = raw_input('Please guess a only letter: ')
+
+        return letter    
+          
 
     def _checkLetterInLettesGuessed(self, letter):
 
-        if letter in self._lettersGuessed:
+        if letter in self.__lettersGuessed:
             guessed = self._getGuessedWord()
-            for letter in self._secretWord:
-                if letter in self._lettersGuessed:
+            for letter in self.__secretWord:
+                if letter in self.__lettersGuessed:
                     guessed += letter
                 else:
                     guessed += '_ '
@@ -34,10 +44,10 @@ class Hangman:
             
     def _checkLetterInSecretWord(self, letter):
         
-        self._lettersGuessed.append(letter)
+        self.__lettersGuessed.append(letter)
         guessed = self._getGuessedWord()
-        for letter in self._secretWord:
-            if letter in self._lettersGuessed:
+        for letter in self.__secretWord:
+            if letter in self.__lettersGuessed:
                 guessed += letter
             else:
                 guessed += '_ '
@@ -46,12 +56,13 @@ class Hangman:
 
     def _letterNotInSecretWord(self, letter):
         
-        self._guesses -=1
-        self._lettersGuessed.append(letter)
+        self.__guesses -=1
+
+        self.__lettersGuessed.append(letter)
 
         guessed = self._getGuessedWord()
-        for letter in self._secretWord:
-            if letter in self._lettersGuessed:
+        for letter in self.__secretWord:
+            if letter in self.__lettersGuessed:
                 guessed += letter
             else:
                 guessed += '_ '
@@ -60,20 +71,20 @@ class Hangman:
     def _menuStart(self):
         
         print 'Welcome to the game, Hangam!'
-        print 'I am thinking of a word that is', len(self._secretWord), ' letters long and', self._letterDiferrent(),' different letters'
+        print 'I am thinking of a word that is', len(self.__secretWord), ' letters long and', self._letterDiferrent(),' different letters'
         print '-------------'   
 
     def game(self):
         self._loadWords()
         self._menuStart()
 
-        while  self._isWordGuessed(self._secretWord, self._lettersGuessed) == False and self._guesses >0:
-            print 'You have ', self._guesses, 'guesses left'
+        while  self._isWordGuessed(self.__secretWord, self.__lettersGuessed) == False and self.__guesses >0:
+            print 'You have ', self.__guesses, 'guesses left'
 
             available = self._getAvailableLetters()
 
             for letter in available:
-                if letter in self._lettersGuessed:
+                if letter in self.__lettersGuessed:
                     available = available.replace(letter, '')
 
             print 'Available letters', available
@@ -83,7 +94,7 @@ class Hangman:
             self._checkLetterInLettesGuessed(letter)
                 
 
-            if letter in self._secretWord:
+            if letter in self.__secretWord:
                 self._checkLetterInSecretWord(letter)
                 
             else:
@@ -91,10 +102,10 @@ class Hangman:
             print '------------'
 
         
-        if self._isWordGuessed(self._secretWord, self._lettersGuessed) == True:
+        if self._isWordGuessed(self.__secretWord, self.__lettersGuessed) == True:
             print 'Congratulations, you won!'
         else:
-            print 'Sorry, you ran out of guesses. The word was ', self._secretWord, '.'
+            print 'Sorry, you ran out of guesses. The word was ', self.__secretWord, '.'
 
     def _loadWords(self):
         """
@@ -109,7 +120,8 @@ class Hangman:
         # wordlist: list of strings
         wordlist = string.split(line)
         print "  ", len(wordlist), "words loaded."
-        self._secretWord = random.choice(wordlist)
+
+        self.__secretWord = random.choice(wordlist)
         
 
 
@@ -139,7 +151,7 @@ class Hangman:
         return available        
 
     def _letterDiferrent(self):
-        letterDiferrent = self._secretWord
+        letterDiferrent = self.__secretWord
         total = 0
         for letter in letterDiferrent:
             if letter in letterDiferrent:
