@@ -7,12 +7,13 @@ WORDLIST_FILENAME = "palavras.txt"
 
 class Hangman:
 
-    _guesses = 8
-    _lettersGuessed = []
-    _secretWord = ''
+    __guesses = 8
+    __lettersGuessed = []
+    __secretWord = ''
 
 
     def _getLetter(self):
+        
         letter = raw_input('Please guess a letter: ')
         return letter
 
