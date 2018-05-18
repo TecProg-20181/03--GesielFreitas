@@ -124,6 +124,11 @@ class Hangman:
         
         # line: string
         line = inFile.readline()
+
+        # garanted of the files doens't empty
+        assert line > 0
+
+        print "linhas: ", line
         
         # wordlist: list of strings
         wordlist = string.split(line)
